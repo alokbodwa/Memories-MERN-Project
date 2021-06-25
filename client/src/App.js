@@ -8,8 +8,15 @@ const App = () => {
         <Container maxwidth="lg">
             <AppBar position="static" color="inherit">
                 <Typography variant="h2" align="center">Memories</Typography>
-                <img src={memories} alt="memories.png" height="60" />
+                <img src={memories} alt="memories.png" height="360" />
             </AppBar>
+            <Grow in>
+                <Container>
+                    <Grid>
+
+                    </Grid>
+                </Container>
+            </Grow>
         </Container>
     )
 }
