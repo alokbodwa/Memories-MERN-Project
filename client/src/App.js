@@ -3,9 +3,10 @@ import { Container, AppBar, Typography, Grow, Grid } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { getPosts } from './actions/posts';
 
+import './index.css'
 import memories from './images/memories.png'
 import Form from './components/Forms/Form'
-import Posts from './components/Posts'
+import Posts from './components/Posts/Posts'
 import useStyles from './styles'
 
 const App = () => {
