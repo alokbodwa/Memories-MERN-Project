@@ -6,9 +6,6 @@ import postRoutes from './routes/posts.js'
 
 const app = express() 
 
-// set the postRoutes
-app.use('/posts', postRoutes)
-
 app.use(express.urlencoded({ 
     limit: "30mb", extended: true
 }))
@@ -18,6 +15,9 @@ app.use(express.json({
 }))
 
 app.use(cors())
+
+// set the postRoutes
+app.use('/posts', postRoutes)
 
 const CONNECTION_URL = 'mongodb://localhost:27017'
 const PORT = process.env.PORT || 5000
