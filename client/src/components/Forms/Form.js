@@ -12,7 +12,7 @@ const Form = () => {
     const [postData, setPostdata] = useState({
         creator: '', title: '', message: '', tags: '', selectedFile: '',
     })
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault()
