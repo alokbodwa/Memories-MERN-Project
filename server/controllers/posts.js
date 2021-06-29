@@ -4,7 +4,6 @@ import mongoose from 'mongoose'
 export const getPosts = async (req, res) => {
     try{
         const postMessages = await PostMessage.find()
-        console.log(postMessages)
         res.status(200).json(postMessages)
     }catch(e){
         res.status(404).send({ message: e.message })
@@ -48,12 +47,31 @@ export const updatePost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
     const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No post with id: ${id}`);
-
-        await postMessage.findByIdAndRemove({ _id: id })
-
+    }
+    try{
+        await PostMessage.findByIdAndDelete({ _id: id })
         res.json({ message: 'Post deleted Successfully' })
+    } catch(e){
+        console.log(e)
+    }
+    
+}
+
+export const likePost = async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send(`No post with id: ${id}`);
+    }
+    
+    try{
+        const updatedPost = await PostMessage.findByIdAndUpdate({ _id: id }, {$inc: {likeCount: 1}})
+        res.json(updatedPost)
+    } catch(e){
+        console.log(e)
+    }
+    
 }
 
 
