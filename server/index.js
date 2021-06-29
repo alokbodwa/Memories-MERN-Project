@@ -18,6 +18,10 @@ app.use(express.json({
 
 app.use(cors())
 
+app.get('/', (req, res) => {
+    res.send('hello to our memories project')
+})
+
 // set the postRoutes
 app.use('/posts', postRoutes)
 
