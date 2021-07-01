@@ -1,10 +1,10 @@
 import React, { useState ,useEffect } from 'react'
-import { Container, AppBar, Typography, Grow, Grid } from '@material-ui/core';
+import { Container, Grow, Grid } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { getPosts } from './actions/posts';
 
 import './index.css'
-import memories from './images/memories.png'
+import Navbar from './components/Navbar/Navbar'
 import Form from './components/Forms/Form'
 import Posts from './components/Posts/Posts'
 import useStyles from './styles'
@@ -20,10 +20,7 @@ const App = () => {
 
     return (
         <Container maxwidth="lg">
-            <AppBar className={classes.appBar} position="static" color="inherit">
-                <Typography className={classes.heading} variant="h2" align="center">Memories</Typography>
-                <img className={classes.image} src={memories} alt="memories.png" height="60" />
-            </AppBar>
+            <Navbar/>
             <Grow in>
                 <Container>
                     <Grid container justify="space-between" alignItems="stretch" spacing={3}>
