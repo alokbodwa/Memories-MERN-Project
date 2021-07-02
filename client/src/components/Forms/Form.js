@@ -1,33 +1,56 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import useStyles from './styles'
-import { createPost } from '../../actions/posts'
+import { createPost, updatePost } from '../../actions/posts'
 
-const Form = () => {
+const Form = ({ currentId, setCurrentId }) => {
     const classes = useStyles();
+    const dispatch = useDispatch()
 
     const [postData, setPostdata] = useState({
         creator: '', title: '', message: '', tags: '', selectedFile: '',
     })
-    const dispatch = useDispatch();
+
+    const post = useSelector((state) => {
+        if ( currentId ) {
+            const requiredPost = state.posts.find((p) => {
+                return p._id === currentId
+            })
+            return requiredPost
+        } else {
+            return null
+        }
+    })
+
+    useEffect(() => {
+        if(post){
+            setPostdata( post )
+        }
+    }, [post])
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        dispatch(createPost(postData))
-        console.log(postData)
+        if ( currentId ) {
+            dispatch(updatePost(currentId, postData))
+            clear()
+        } else{
+            dispatch(createPost(postData))
+            clear()
+        }
     }
 
     const clear = () => {
-
+        setCurrentId(null)
+        setPostdata({ creator: '', title: '', message: '', tags: '', selectedFile: '' })
     }
 
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.form} ${classes.root}`} onSubmit={handleSubmit}>
-                <Typography variant="h6" margin="6">Creating a Memory</Typography>
+                <Typography variant="h6" margin="6">{currentId ? 'Updating' : 'Creating'} a Memory</Typography>
 
                 <TextField
                     name="creator"
