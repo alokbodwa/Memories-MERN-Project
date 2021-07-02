@@ -25,6 +25,7 @@ const postSchema = mongoose.Schema({
         default: new Date()
     }
 })
+console.log (new Date())
 
 const PostMessage = mongoose.model('PostMessage', postSchema)
 
