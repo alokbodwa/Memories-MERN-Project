@@ -6,14 +6,18 @@ import { spacing } from '@material-ui/system'
 import useStyles from './Styles';
 import Input from './Input'
 
+
+
+
 const Auth = () => {
     const classes = useStyles()
     const [showPassword, setShowPassword] = useState(false)
-    const [isSignUp, setIsSignUp] = useState(false)
+    const [isSignUp, setIsSignUp] = useState(false);
+    
 
     const handleSubmit = () => {
-
-    }
+     
+    };
     const handleChange = () => {
 
     }
