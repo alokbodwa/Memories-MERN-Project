@@ -8,8 +8,17 @@ import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined'
 import useStyles from './Styles';
 import Input from './Input'
 import Icon from './Icon'
+import { signin, signup } from "../../actions/auth";
 
 
+
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 
 const Auth = () => {
@@ -18,21 +27,27 @@ const Auth = () => {
     const history = useHistory()
     const [showPassword, setShowPassword] = useState(false)
     const [isSignUp, setIsSignUp] = useState(false);
-    
+    const [formData, setFormData] = useState(initialState);
 
-    const handleSubmit = () => {
-     
+
+     const handleSubmit = (e) => {
+       e.preventDefault();
+       if (isSignUp) {
+          dispatch(signup(formData, history));
+        } else {
+          dispatch(signin(formData, history));
+        }
+     };
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]:e.target.value});
     };
-    const handleChange = () => {
-
-    }
 
     const handleShowPassword = () => {
         return setShowPassword((prevState) => !prevState);
     }
 
     const switchMode = () => {
-        setIsSignUp((prevState) => !prevState)
+        setIsSignUp((prevState) => !prevState);
         handleShowPassword(false)
     }
 
