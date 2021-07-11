@@ -28,7 +28,7 @@ export const updatePost = ( currentId, postData ) => async(dispatch) => {
         const { data } = await api.updatePost(currentId, postData)
         dispatch({ type: UPDATE, payload: data })
     } catch(e) {
-            console.log(e.message)
+        console.log(e.message)
     }
 }
 
@@ -37,7 +37,7 @@ export const deletePost = ( currentId ) => async(dispatch) => {
         await api.deletePost(currentId)
         dispatch({ type: DELETE, payload: currentId })
     } catch(e) {
-            console.log(e.message)
+        console.log(e.message)
     }
 }
 

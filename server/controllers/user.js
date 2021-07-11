@@ -18,7 +18,7 @@ export const signin = async (req, res) => {
     if (!isPasswordCorrect)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, 'test', {expiresIn:"1h"});
+    const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, 'test', { expiresIn:"1h" });
 
     res.status(200).json({ result: oldUser, token });
   } catch (err) {
@@ -27,14 +27,14 @@ export const signin = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
-  const { email, password, confirmassword , firstName, lastName } = req.body;
+  const { email, password, confirmPassword , firstName, lastName } = req.body;
 
   try {
     const oldUser = await User.findOne({ email });
 
     if (oldUser)
       return res.status(400).json({ message: "User already exists" });
-    if(password != confirmassword) return res.status(400).json({message:"Password dont match."});
+    if(password !== confirmPassword) return res.status(400).json({message:"Password dont match."});
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -44,7 +44,7 @@ export const signup = async (req, res) => {
       name: `${firstName} ${lastName}`,
     });
 
-    const token = jwt.sign({ email: result.email, id: result._id }, test, {
+    const token = jwt.sign({ email: result.email, id: result._id }, 'test', {
       expiresIn: "1h",
     });
 

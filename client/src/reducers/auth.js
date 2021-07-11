@@ -3,6 +3,7 @@ import { AUTH, LOGOUT } from '../constants/actionTypes'
 export default (state = { authdata: null }, action) => {
     switch(action.type){
         case AUTH:
+            // localStorage can only store strings.
             localStorage.setItem('profile', JSON.stringify({ ...action?.data }))
             return { ...state, authData: action?.data}
 

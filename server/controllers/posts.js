@@ -11,8 +11,9 @@ export const getPosts = async (req, res) => {
 }
 
 export const createPost = async(req, res) => {
-    const post = req.body
-    const newPost = new PostMessage(post)
+    const post = req.body 
+    const newPost = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() })
+
     try{
         await newPost.save()
         res.status(201).json(newPost)
@@ -33,12 +34,12 @@ export const getPost = async (req, res) => {
 }
 export const updatePost = async (req, res) => {
     const { id } = req.params;
-    const { title, message, creator, selectedFile, tags } = req.body;
+    const { title, message, creator, selectedFile, tags, likeCount } = req.body;
     
     if (!mongoose.Types.ObjectId.isValid(id)) 
         return res.status(404).send(`No post with id: ${id}`);
 
-    const updatedPost = { creator, title, message, tags, selectedFile, _id: id };
+    const updatedPost = { creator, title, message, tags, selectedFile, likeCount, _id: id };
 
     await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true });
 
@@ -62,12 +63,29 @@ export const deletePost = async (req, res) => {
 export const likePost = async (req, res) => {
     const { id } = req.params;
     
+    if ( !req.userId ) {
+        return res.json({ message: 'Unauthenticated' })
+    }
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send(`No post with id: ${id}`);
     }
+
+    const post = await PostMessage.findById(id)
+
+    const index = post.likeCount.findIndex((id) => {
+        return id === String(req.userId)
+    })
+    if ( index === -1){
+        post.likeCount.push(req.userId)
+    } else{
+        post.likeCount = post.likeCount.filter((likeId) => {
+            return likeId !== req.userId
+        })
+    }
     
     try{
-        const updatedPost = await PostMessage.findByIdAndUpdate({ _id: id }, {$inc: {likeCount: 1}})
+        const updatedPost = await PostMessage.findByIdAndUpdate( id, post, { new: true })
         res.json(updatedPost)
     } catch(e){
         console.log(e)

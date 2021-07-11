@@ -9,9 +9,10 @@ import { createPost, updatePost } from '../../actions/posts'
 const Form = ({ currentId, setCurrentId }) => {
     const classes = useStyles();
     const dispatch = useDispatch()
+    const user = JSON.parse(localStorage.getItem('profile'))
 
     const [postData, setPostdata] = useState({
-        creator: '', title: '', message: '', tags: '', selectedFile: '',
+        title: '', message: '', tags: '', selectedFile: '',
     })
 
     const post = useSelector((state) => {
@@ -34,17 +35,27 @@ const Form = ({ currentId, setCurrentId }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         if ( currentId ) {
-            dispatch(updatePost(currentId, postData))
+            dispatch(updatePost(currentId, { ...postData, name : user?.result?.name }))
             clear()
         } else{
-            dispatch(createPost(postData))
+            dispatch(createPost({ ...postData, name : user?.result?.name }))
             clear()
         }
     }
 
     const clear = () => {
         setCurrentId(null)
-        setPostdata({ creator: '', title: '', message: '', tags: '', selectedFile: '' })
+        setPostdata({ title: '', message: '', tags: '', selectedFile: '' })
+    }
+
+    if ( !user?.result?.name ) {
+        return (
+            <Paper className={classes.paper}>
+                <Typography variant="h6" align="center">
+                    Please sign in to create memory and like others memories
+                </Typography>
+            </Paper>
+        )
     }
 
     return (
@@ -52,14 +63,6 @@ const Form = ({ currentId, setCurrentId }) => {
             <form autoComplete="off" noValidate className={`${classes.form} ${classes.root}`} onSubmit={handleSubmit}>
                 <Typography variant="h6" margin="6">{currentId ? 'Updating' : 'Creating'} a Memory</Typography>
 
-                <TextField
-                    name="creator"
-                    variant="outlined"
-                    label="Creator"
-                    fullWidth
-                    value={postData.creator}
-                    onChange={(e) => setPostdata({ ...postData, creator: e.target.value })}
-                />
                 <TextField
                     name="title"
                     variant="outlined"
@@ -79,10 +82,10 @@ const Form = ({ currentId, setCurrentId }) => {
                 <TextField
                     name="tags"
                     variant="outlined"
-                    label="Tags"
+                    label="Tags - Use Commas to separate"
                     fullWidth
                     value={postData.tags}
-                    onChange={(e) => setPostdata({ ...postData, tags: e.target.value })}
+                    onChange={(e) => setPostdata({ ...postData, tags: e.target.value.split(",") })}
                 />
                 <div className={classes.fileInput}>
                     <FileBase

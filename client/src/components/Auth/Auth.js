@@ -30,7 +30,7 @@ const Auth = () => {
     const [formData, setFormData] = useState(initialState);
 
 
-     const handleSubmit = (e) => {
+    const handleSubmit = (e) => {
        e.preventDefault();
        if (isSignUp) {
           dispatch(signup(formData, history));

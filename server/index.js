@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 // set the postRoutes
 app.use('/posts', postRoutes);
-app.use('/user',userRoutes);
+app.use('/user', userRoutes);
 
 const PORT = process.env.PORT || 5000
 
